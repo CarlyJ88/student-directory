@@ -9,9 +9,8 @@ def input_students
   while !name.empty? do
     # add the student hash to the array
     students << {name: name, cohort: :november}
-    puts "Now we have #{students.count} students."
-    # get another name from the user
-    name = gets.chomp
+      # get another name from the user
+      name = gets.chomp
   end
   # return the array of students
   students
@@ -24,7 +23,9 @@ end
 
 def print(students)
   students.each_with_index do |student, index|
-    puts "#{index +1}: #{student[:name]} (#{student[:cohort]} cohort)"
+    if student[:name].chars.first == 'C'
+      puts "#{index +1}: #{student[:name]} (#{student[:cohort]} cohort)"
+    end
   end
 end
 
