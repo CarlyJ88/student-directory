@@ -18,10 +18,14 @@ def print_header
 end
 
 def print(students)
-  students.each_with_index do |student, index|
-    if student[:name].chars.first == 'C' && student[:name].length < 12
-      puts "#{index +1}: #{student[:name]} (#{student[:cohort]} cohort)
-      (Hobbies: #{student[:hobbies]}) (Country of birth: #{student[:country]}) (height: #{student[:height]})"
+  count = 0
+  while count < students.length
+  # students.each_with_index do |student, index|
+    if students[count][:name].chars.first == 'C' && students[count][:name].length < 12
+      puts "#{count +1}: #{students[count][:name]} (#{students[count][:cohort]} cohort)
+      (Hobbies: #{students[count][:hobbies]}) (Country of birth: #{students[count][:country]})
+      (height: #{students[count][:height]})"
+      count += 1
     end
   end
 end
