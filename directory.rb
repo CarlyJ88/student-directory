@@ -22,9 +22,11 @@ def print(students)
   while count < students.length
   # students.each_with_index do |student, index|
     if students[count][:name].chars.first == 'C' && students[count][:name].length < 12
-      puts "#{count +1}: #{students[count][:name]} (#{students[count][:cohort]} cohort)
-      (Hobbies: #{students[count][:hobbies]}) (Country of birth: #{students[count][:country]})
-      (height: #{students[count][:height]})"
+      puts "#{count +1}: #{students[count][:name]}".center(40)
+      puts  "(#{students[count][:cohort]} cohort)".center(40)
+      puts "(Hobbies: #{students[count][:hobbies]})".center(40)
+      puts "(Country of birth: #{students[count][:country]})".center(40)
+      puts "(height: #{students[count][:height]})".center(40)
       count += 1
     end
   end
