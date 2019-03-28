@@ -1,18 +1,26 @@
 students = []
 def input_students(students)
   name = ''
-  cohort = ''
   while true do
     puts "Please enter the names of the students or hit enter to escape"
     name = gets.chomp.capitalize
     if name.empty?
       break
-    end
+    else
+    input_cohort(students, name)
+  end
+  end
+end
+
+def input_cohort(students, name)
+    cohort = ''
+    # while true do
     puts "Please enter your cohort"
     cohort = gets.chomp.capitalize.to_sym
     cohort = :April if cohort.empty?
+    # if
     options(students, name, cohort)
-    end
+    # end
 end
 
 def options(students, name, cohort)
@@ -48,16 +56,3 @@ input_students(students)
 print_header
 print(students)
 print_footer(students)
-
-# def delete_cohort(students)
-#   puts "Did you enter that correctly?"
-#   answer = gets.chomp
-#   if answer == 'no'
-#     students.delete(:cohort)
-#     puts "Please re-enter your cohort"
-#     puts "To finish, just hit return twice"
-#     cohort = gets.chomp.to_sym.capitalize
-#   elsif answer == 'yes'
-#     input_students
-#   end
-# end
