@@ -4,9 +4,15 @@ def input_students
   puts "Please enter the names of the students"
   name = gets.chomp
 
-  while !name.empty? do
-    students << { name: name, cohort: :november,
-      hobbies: :'climbing :yoga :swimming :watching Netflix', country: :UK, height: :'158cm' }
+  puts "Please enter your cohort"
+  puts "To finish, just hit return twice"
+  cohort = gets.chomp
+  cohort = 'April' if cohort.empty?
+
+  while !name.empty? && !cohort.empty? do
+    students << { name: name, cohort: cohort,
+      hobbies: :'climbing, yoga, swimming, watching Netflix',
+      country: :UK, height: :'158cm' }
       name = gets.chomp
   end
   students
@@ -21,7 +27,7 @@ def print(students)
   count = 0
   while count < students.length
   # students.each_with_index do |student, index|
-    if students[count][:name].chars.first == 'C' && students[count][:name].length < 12
+    if students[count][:name].chr == 'C' && students[count][:name].length < 12
       puts "#{count +1}: #{students[count][:name]}".center(40)
       puts  "(#{students[count][:cohort]} cohort)".center(40)
       puts "(Hobbies: #{students[count][:hobbies]})".center(40)
