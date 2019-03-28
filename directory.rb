@@ -1,22 +1,28 @@
 def input_students
   students = []
-
   puts "Please enter the names of the students"
   name = gets.chomp.capitalize
 
   puts "Please enter your cohort"
   puts "To finish, just hit return twice unless you made a typo
   then type delete to start again"
-  cohort = gets.chomp.to_sym
-  cohort = 'April' if cohort.empty?
-  # if typo students.delete(cohort)
+  cohort = gets.chomp.to_sym.capitalize
 
   while !name.empty? && !cohort.empty? do
     students << { name: name, cohort: cohort,
       hobbies: :'climbing, yoga, swimming, watching Netflix',
       country: :UK, height: :'158cm' }
-      name = gets.chomp
+      puts "Please enter the names of the students"
+      name = gets.chomp.capitalize
+      puts "Please enter your cohort"
+      puts "To finish, just hit return twice"
+      cohort = gets.chomp.to_sym.capitalize
+      cohort = :April if cohort.empty?
+      if cohort == :April
+        break
+      end
   end
+
   students
 end
 
