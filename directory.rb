@@ -2,12 +2,14 @@ def input_students
   students = []
 
   puts "Please enter the names of the students"
-  name = gets.chomp
+  name = gets.chomp.capitalize
 
   puts "Please enter your cohort"
-  puts "To finish, just hit return twice"
-  cohort = gets.chomp
+  puts "To finish, just hit return twice unless you made a typo
+  then type delete to start again"
+  cohort = gets.chomp.to_sym
   cohort = 'April' if cohort.empty?
+  # if typo students.delete(cohort)
 
   while !name.empty? && !cohort.empty? do
     students << { name: name, cohort: cohort,
