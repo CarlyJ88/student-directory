@@ -1,22 +1,28 @@
-students = []
+@students = []
 
-def interactive_menu(students)
-  # students = []
+def print_menu
+  puts "1. Input the students:"
+  puts "2. Show the students"
+  puts "9. Exit" # more options to come
+end
+
+def show_students
+  print_header
+  print
+  print_footer
+end
+
+def interactive_menu
   loop do
     # 1. print the menu and ask the user what to do
-    puts "1. Input the students:"
-    puts "2. Show the students"
-    puts "9. Exit" # more options to come
     # 2. read the input and save it into a variable
     selection = gets.chomp
     # 3. do what the user has asked
     case selection
     when "1"
-      input_students(students)
+      input_students
     when "2"
-      print_header
-      print(students)
-      print_footer(students)
+      show_students
     when "9"
       exit # this will cause the program to terminate
     else
@@ -25,7 +31,7 @@ def interactive_menu(students)
   end
 end
 
-def input_students(students)
+def input_students
   name = ''
   while true do
     puts "Please enter the names of the students or hit enter to escape"
@@ -33,24 +39,24 @@ def input_students(students)
     if name.empty?
       break
     else
-    input_cohort(students, name)
+    input_cohort(name)
   end
   end
 end
 
-def input_cohort(students, name)
+def input_cohort(name)
     cohort = ''
     # while true do
     puts "Please enter your cohort"
     cohort = gets.chomp.capitalize.to_sym
     cohort = :April if cohort.empty?
     # if
-    options(students, name, cohort)
+    options(name, cohort)
     # end
 end
 
-def options(students, name, cohort)
-    students << { name: name, cohort: cohort,
+def options(name, cohort)
+    @students << { name: name, cohort: cohort,
       hobbies: :'climbing, yoga, swimming, watching Netflix',
       country: :UK, height: :'158cm' }
 end
@@ -60,26 +66,26 @@ def print_header
   puts "--------------"
 end
 
-def print(students)
+def print
   count = 0
-  while count < students.length
-    if students[count][:name].chr == 'C' && students[count][:name].length < 12
-      puts "#{count +1}: #{students[count][:name]}".center(40)
-      puts "(#{students[count][:cohort]} cohort)".center(40)
-      puts "(Hobbies: #{students[count][:hobbies]})".center(40)
-      puts "(Country of birth: #{students[count][:country]})".center(40)
-      puts "(height: #{students[count][:height]})".center(40)
+  while count < @students.length
+    if @students[count][:name].chr == 'C' && @students[count][:name].length < 12
+      puts "#{count +1}: #{@students[count][:name]}".center(40)
+      puts "(#{@students[count][:cohort]} cohort)".center(40)
+      puts "(Hobbies: #{@students[count][:hobbies]})".center(40)
+      puts "(Country of birth: #{@students[count][:country]})".center(40)
+      puts "(height: #{@students[count][:height]})".center(40)
       count += 1
     end
   end
 end
 
-def print_footer(students)
-  puts "Overall, we have #{students.count} great students."
+def print_footer
+  puts "Overall, we have #{@students.count} great students."
 end
 
-interactive_menu(students)
+interactive_menu
 # input_students(students)
 print_header
-print(students)
-print_footer(students)
+print
+print_footer
