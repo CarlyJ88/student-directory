@@ -8,26 +8,27 @@ end
 
 def show_students
   print_header
-  print
+  print_students_list
   print_footer
+end
+
+def process(selection)
+  case selection
+  when "1"
+    input_students
+  when "2"
+    show_students
+  when "9"
+    exit # this will cause the program to terminate
+  else
+    puts "I don't know what you meant, try again"
+  end
 end
 
 def interactive_menu
   loop do
-    # 1. print the menu and ask the user what to do
-    # 2. read the input and save it into a variable
-    selection = gets.chomp
-    # 3. do what the user has asked
-    case selection
-    when "1"
-      input_students
-    when "2"
-      show_students
-    when "9"
-      exit # this will cause the program to terminate
-    else
-      puts "I don't know what you meant, try again"
-    end
+    print_menu
+    process(gets.chomp)
   end
 end
 
@@ -66,7 +67,7 @@ def print_header
   puts "--------------"
 end
 
-def print
+def print_students_list
   count = 0
   while count < @students.length
     if @students[count][:name].chr == 'C' && @students[count][:name].length < 12
@@ -85,7 +86,6 @@ def print_footer
 end
 
 interactive_menu
-# input_students(students)
 print_header
 print
 print_footer
