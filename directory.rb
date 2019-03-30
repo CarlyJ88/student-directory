@@ -1,7 +1,19 @@
 @students = []
 
-def load_students
-  file = File.open("students.csv", "r")
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exits?(filename) # if it exists
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else # if it doesn't exist
+    puts "Sorry, the #{filename} doesn't exist"
+    exit # quit the program
+  end
+end
+
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(', ')
     @students << { name: name, cohort: cohort.to_sym }
@@ -22,10 +34,10 @@ def save_students
 end
 
 def print_menu
-  puts "1. Input the students:"
+  puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the students to the students.csv"
-  puts "4. Load the list from the students.csv"
+  puts "4. Load list of students from a file"
   puts "9. Exit" # more options to come
 end
 
@@ -55,7 +67,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -63,7 +75,7 @@ def input_students
   name = ''
   while true do
     puts "Please enter the names of the students or hit enter to escape"
-    name = gets.chomp.capitalize
+    name = STDIN.gets.chomp.capitalize
     if name.empty?
       break
     else
@@ -73,11 +85,11 @@ def input_students
 end
 
 def input_cohort(name)
-    cohort = ''
-    puts "Please enter your cohort"
-    cohort = gets.chomp.capitalize.to_sym
-    cohort = :April if cohort.empty?
-    options(name, cohort)
+  cohort = ''
+  puts "Please enter your cohort"
+  cohort = STDIN.gets.chomp.capitalize.to_sym
+  cohort = :April if cohort.empty?
+  options(name, cohort)
 end
 
 def options(name, cohort)
@@ -91,14 +103,18 @@ def print_header
   puts "--------------"
 end
 
+def student_profile(count)
+  puts "#{count +1}: #{@students[count][:name]}".center(40)
+  puts "(#{@students[count][:cohort]} cohort)".center(40)
+  puts "(Hobbies: #{@students[count][:hobbies]})".center(40)
+  puts "(Country of birth: #{@students[count][:country]})".center(40)
+  puts "(height: #{@students[count][:height]})".center(40)
+end
+
 def print_students_list
   count = 0
   while count < @students.length
-      puts "#{count +1}: #{@students[count][:name]}".center(40)
-      puts "(#{@students[count][:cohort]} cohort)".center(40)
-      puts "(Hobbies: #{@students[count][:hobbies]})".center(40)
-      puts "(Country of birth: #{@students[count][:country]})".center(40)
-      puts "(height: #{@students[count][:height]})".center(40)
+    student_profile(count)
     count += 1
   end
 end
@@ -107,11 +123,7 @@ def print_students_list_starting_with_letter
   count = 0
   while count < @students.length
     if @students[count][:name].chr == 'C'
-      puts "#{count +1}: #{@students[count][:name]}".center(40)
-      puts "(#{@students[count][:cohort]} cohort)".center(40)
-      puts "(Hobbies: #{@students[count][:hobbies]})".center(40)
-      puts "(Country of birth: #{@students[count][:country]})".center(40)
-      puts "(height: #{@students[count][:height]})".center(40)
+      student_profile(count)
     end
     count += 1
   end
@@ -121,11 +133,7 @@ def print_students_under_length
   count = 0
   while count < @students.length
     if @students[count][:name].length < 12
-      puts "#{count +1}: #{@students[count][:name]}".center(40)
-      puts "(#{@students[count][:cohort]} cohort)".center(40)
-      puts "(Hobbies: #{@students[count][:hobbies]})".center(40)
-      puts "(Country of birth: #{@students[count][:country]})".center(40)
-      puts "(height: #{@students[count][:height]})".center(40)
+      student_profile(count)
     end
     count += 1
   end
