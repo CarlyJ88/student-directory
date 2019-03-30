@@ -1,5 +1,14 @@
 @students = []
 
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(', ')
+    @students << { name: name, cohort: cohort.to_sym }
+  end
+  file.close
+end
+
 def save_students
   # open the file for writing
   file = File.open("students.csv", "w")
@@ -16,6 +25,7 @@ def print_menu
   puts "1. Input the students:"
   puts "2. Show the students"
   puts "3. Save the students to the students.csv"
+  puts "4. Load the list from the students.csv"
   puts "9. Exit" # more options to come
 end
 
@@ -33,6 +43,8 @@ def process(selection)
     show_students
   when "3"
     save_students
+  when "4"
+    load_students
   when "9"
     exit # this will cause the program to terminate
   else
@@ -62,13 +74,10 @@ end
 
 def input_cohort(name)
     cohort = ''
-    # while true do
     puts "Please enter your cohort"
     cohort = gets.chomp.capitalize.to_sym
     cohort = :April if cohort.empty?
-    # if
     options(name, cohort)
-    # end
 end
 
 def options(name, cohort)
@@ -85,14 +94,40 @@ end
 def print_students_list
   count = 0
   while count < @students.length
-    if @students[count][:name].chr == 'C' && @students[count][:name].length < 12
       puts "#{count +1}: #{@students[count][:name]}".center(40)
       puts "(#{@students[count][:cohort]} cohort)".center(40)
       puts "(Hobbies: #{@students[count][:hobbies]})".center(40)
       puts "(Country of birth: #{@students[count][:country]})".center(40)
       puts "(height: #{@students[count][:height]})".center(40)
-      count += 1
+    count += 1
+  end
+end
+
+def print_students_list_starting_with_letter
+  count = 0
+  while count < @students.length
+    if @students[count][:name].chr == 'C'
+      puts "#{count +1}: #{@students[count][:name]}".center(40)
+      puts "(#{@students[count][:cohort]} cohort)".center(40)
+      puts "(Hobbies: #{@students[count][:hobbies]})".center(40)
+      puts "(Country of birth: #{@students[count][:country]})".center(40)
+      puts "(height: #{@students[count][:height]})".center(40)
     end
+    count += 1
+  end
+end
+
+def print_students_under_length
+  count = 0
+  while count < @students.length
+    if @students[count][:name].length < 12
+      puts "#{count +1}: #{@students[count][:name]}".center(40)
+      puts "(#{@students[count][:cohort]} cohort)".center(40)
+      puts "(Hobbies: #{@students[count][:hobbies]})".center(40)
+      puts "(Country of birth: #{@students[count][:country]})".center(40)
+      puts "(height: #{@students[count][:height]})".center(40)
+    end
+    count += 1
   end
 end
 
@@ -101,6 +136,3 @@ def print_footer
 end
 
 interactive_menu
-print_header
-print
-print_footer
