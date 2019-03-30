@@ -15,7 +15,7 @@ end
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    name, cohort = line.chomp.split(', ')
+    name, cohort = line.gsub(/\n/, '').split(', ')
     @students << { name: name, cohort: cohort.to_sym }
   end
   file.close
@@ -38,12 +38,23 @@ def print_menu
   puts "2. Show the students"
   puts "3. Save the students to the students.csv"
   puts "4. Load list of students from a file"
+  puts "5. Show list of students starting with letter 'C'"
+  puts "6. Show list of students under 12 characters long"
+  puts "7. Show students listed by cohort"
   puts "9. Exit" # more options to come
 end
 
-def show_students
+def show_students(symbol)
   print_header
-  print_students_list
+  if symbol == :a
+    print_students_list
+  elsif symbol == :b
+    print_students_list_starting_with_letter
+  elsif symbol == :c
+    print_students_under_length
+  elsif symbol == :d
+    print_students_by_cohort
+  end
   print_footer
 end
 
@@ -52,11 +63,17 @@ def process(selection)
   when "1"
     input_students
   when "2"
-    show_students
+    show_students(:a)
   when "3"
     save_students
   when "4"
     load_students
+  when "5"
+    show_students(:b)
+  when "6"
+    show_students(:c)
+  when "7"
+    show_students(:d)
   when "9"
     exit # this will cause the program to terminate
   else
@@ -67,7 +84,7 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(STDIN.gets.chomp)
+    process(STDIN.gets.gsub(/\n/, ''))
   end
 end
 
@@ -75,7 +92,7 @@ def input_students
   name = ''
   while true do
     puts "Please enter the names of the students or hit enter to escape"
-    name = STDIN.gets.chomp.capitalize
+    name = STDIN.gets.gsub(/\n/, '').capitalize
     if name.empty?
       break
     else
@@ -87,7 +104,7 @@ end
 def input_cohort(name)
   cohort = ''
   puts "Please enter your cohort"
-  cohort = STDIN.gets.chomp.capitalize.to_sym
+  cohort = STDIN.gets.gsub(/\n/, '').capitalize.to_sym
   cohort = :April if cohort.empty?
   options(name, cohort)
 end
@@ -96,6 +113,11 @@ def options(name, cohort)
     @students << { name: name, cohort: cohort,
       hobbies: :'climbing, yoga, swimming, watching Netflix',
       country: :UK, height: :'158cm' }
+      if @students.count == 1
+        puts "Now we have #{@students.count} student"
+      else
+        puts "Now we have #{@students.count} students"
+      end
 end
 
 def print_header
@@ -137,6 +159,13 @@ def print_students_under_length
     end
     count += 1
   end
+end
+
+def print_students_by_cohort
+  @students.sort! do |student1, student2|
+    student1[:cohort] <=> student2[:cohort]
+  end
+  print_students_list
 end
 
 def print_footer
