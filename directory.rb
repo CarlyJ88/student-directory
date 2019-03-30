@@ -45,17 +45,19 @@ def print_menu
 end
 
 def show_students(symbol)
-  print_header
-  if symbol == :a
-    print_students_list
-  elsif symbol == :b
-    print_students_list_starting_with_letter
-  elsif symbol == :c
-    print_students_under_length
-  elsif symbol == :d
-    print_students_by_cohort
+  if @students.count > 0
+    print_header
+    if symbol == :list_all_students
+      print_students_list
+    elsif symbol == :list_students_by_initial
+      print_students_list_starting_with_letter
+    elsif symbol == :list_students_under_12_characters
+      print_students_under_length
+    elsif symbol == :list_students_by_cohort
+      print_students_by_cohort
+    end
+    print_footer
   end
-  print_footer
 end
 
 def process(selection)
@@ -63,17 +65,17 @@ def process(selection)
   when "1"
     input_students
   when "2"
-    show_students(:a)
+    show_students(:list_all_students)
   when "3"
     save_students
   when "4"
     load_students
   when "5"
-    show_students(:b)
+    show_students(:list_students_by_initial)
   when "6"
-    show_students(:c)
+    show_students(:list_students_under_12_characters)
   when "7"
-    show_students(:d)
+    show_students(:list_students_by_cohort)
   when "9"
     exit # this will cause the program to terminate
   else
@@ -109,14 +111,14 @@ def input_cohort(name)
   options(name, cohort)
 end
 
-def options(name, cohort)
+def student_data(name, cohort)
     @students << { name: name, cohort: cohort,
       hobbies: :'climbing, yoga, swimming, watching Netflix',
       country: :UK, height: :'158cm' }
       if @students.count == 1
-        puts "Now we have #{@students.count} student"
+        puts "Now we have #{@students.count} student."
       else
-        puts "Now we have #{@students.count} students"
+        puts "Now we have #{@students.count} students."
       end
 end
 
@@ -169,7 +171,11 @@ def print_students_by_cohort
 end
 
 def print_footer
-  puts "Overall, we have #{@students.count} great students."
+  if @students == 1
+    puts "Overall, we have #{@students.count} great student."
+  else
+    puts "Overall, we have #{@students.count} great students."
+  end
 end
 
 interactive_menu
