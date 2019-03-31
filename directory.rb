@@ -47,8 +47,7 @@ def save_students
   end
   CSV.open(filename, "wb") do |csv|
     @students.each do |student|
-      student_data = [student[:name], student[:cohort]]
-      csv << student_data
+      csv << [student[:name], student[:cohort]]
     end
   end
   puts "Students saved to #{filename}."
