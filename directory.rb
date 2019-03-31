@@ -39,18 +39,18 @@ def input_cohort(name)
 end
 
 def save_students
-  puts "Please state the filename you would like to save your students to"
+  puts "Please state the filename you would like to save your students to."
   filename = STDIN.gets.gsub(/\n/, '')
   if filename.empty?
     filename = "students.csv"
   end
-  file = File.open(filename, "w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(", ")
-    file.puts csv_line
+  File.open(filename, "w") do |file|
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(", ")
+      file.puts csv_line
+    end
   end
-  file.close
   puts "Students saved to #{filename}."
 end
 
@@ -64,12 +64,12 @@ def choose_file
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.gsub(/\n/, '').split(', ')
-    student_data(name, cohort)
+  file = File.open(filename, "r") do |r|
+    r.readlines.each do |line|
+      name, cohort = line.gsub(/\n/, '').split(', ')
+      student_data(name, cohort)
+    end
   end
-  file.close
   puts "Students loaded from #{filename}."
 end
 
