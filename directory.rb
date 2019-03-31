@@ -39,13 +39,27 @@ def input_cohort(name)
 end
 
 def save_students
-  file = File.open("students.csv", "w")
+  puts "Please state the filename you would like to save your students to"
+  filename = STDIN.gets.gsub(/\n/, '')
+  if filename.empty?
+    filename = "students.csv"
+  end
+  file = File.open(filename, "w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(", ")
     file.puts csv_line
   end
   file.close
+end
+
+def choose_file
+  puts "Please state the filename you would like to load your students from"
+  filename = STDIN.gets.gsub(/\n/, '')
+  if filename.empty?
+    filename = "students.csv"
+  end
+  load_students(filename)
 end
 
 def load_students(filename = "students.csv")
@@ -148,7 +162,7 @@ def process(selection)
   when "3"
     save_students
   when "4"
-    load_students
+    choose_file
   when "5"
     show_students(:list_students_by_initial)
   when "6"
@@ -172,7 +186,7 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the students to the students.csv"
+  puts "3. Save the students to a file"
   puts "4. Load list of students from a file"
   puts "5. Show list of students starting with letter 'C'"
   puts "6. Show list of students under 12 characters long"
