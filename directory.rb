@@ -1,30 +1,19 @@
 @students = []
 
 def try_load_students
-  filename = ARGV.first # first argument from the command line
-  return if filename.nil? # get out of the method if it isn't given
-  if File.exits?(filename) # if it exists
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exits?(filename)
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
-  else # if it doesn't exist
+  else
     puts "Sorry, the #{filename} doesn't exist"
-    exit # quit the program
+    exit
   end
-end
-
-def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.gsub(/\n/, '').split(', ')
-    @students << { name: name, cohort: cohort.to_sym }
-  end
-  file.close
 end
 
 def save_students
-  # open the file for writing
   file = File.open("students.csv", "w")
-  # iterate over the array of save_students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(", ")
@@ -41,7 +30,7 @@ def print_menu
   puts "5. Show list of students starting with letter 'C'"
   puts "6. Show list of students under 12 characters long"
   puts "7. Show students listed by cohort"
-  puts "9. Exit" # more options to come
+  puts "9. Exit"
 end
 
 def show_students(symbol)
@@ -106,20 +95,30 @@ end
 def input_cohort(name)
   cohort = ''
   puts "Please enter your cohort"
-  cohort = STDIN.gets.gsub(/\n/, '').capitalize.to_sym
+  cohort = STDIN.gets.gsub(/\n/, '').capitalize
   cohort = :April if cohort.empty?
-  options(name, cohort)
+  student_data(name, cohort)
+  if @students.count == 1
+    puts "Now we have #{@students.count} student."
+  else
+    puts "Now we have #{@students.count} students."
+  end
+end
+
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
+  file.readlines.each do |line|
+    name, cohort = line.gsub(/\n/, '').split(', ')
+    student_data(name, cohort)
+  end
+  file.close
+
 end
 
 def student_data(name, cohort)
-    @students << { name: name, cohort: cohort,
+    @students << { name: name, cohort: cohort.to_sym,
       hobbies: :'climbing, yoga, swimming, watching Netflix',
       country: :UK, height: :'158cm' }
-      if @students.count == 1
-        puts "Now we have #{@students.count} student."
-      else
-        puts "Now we have #{@students.count} students."
-      end
 end
 
 def print_header
@@ -152,6 +151,9 @@ def print_students_list_starting_with_letter
     count += 1
   end
 end
+# ["John", "Alice", "Amanda", "Bob"].select do |name|
+#   name.chars.first == "A"
+# end
 
 def print_students_under_length
   count = 0
