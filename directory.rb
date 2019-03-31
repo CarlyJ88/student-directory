@@ -1,4 +1,5 @@
 @students = []
+require 'csv'
 
 def try_load_students
   filename = ARGV.first
@@ -44,11 +45,10 @@ def save_students
   if filename.empty?
     filename = "students.csv"
   end
-  File.open(filename, "w") do |file|
+  CSV.open(filename, "wb") do |csv|
     @students.each do |student|
       student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(", ")
-      file.puts csv_line
+      csv << student_data
     end
   end
   puts "Students saved to #{filename}."
@@ -64,12 +64,10 @@ def choose_file
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r") do |r|
-    r.readlines.each do |line|
-      name, cohort = line.gsub(/\n/, '').split(', ')
+    CSV.foreach(filename) do |row|
+      name, cohort = row
       student_data(name, cohort)
     end
-  end
   puts "Students loaded from #{filename}."
 end
 
